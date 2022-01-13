@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_youtube_clone/data.dart';
-import 'package:flutter_youtube_clone/screens/home/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import 'package:flutter_youtube_clone/data.dart';
+import 'package:flutter_youtube_clone/screens/home/home_controller.dart';
+
 class VideoCard extends StatelessWidget {
   Video video;
+  bool hasPadding;
+  final VoidCallback? onTap;
   VideoCard({
-    required this.video,
     Key? key,
+    required this.video,
+    this.hasPadding = false,
+    this.onTap,
   }) : super(key: key);
 
   HomeController controller = Get.put(HomeController());
@@ -23,18 +28,21 @@ class VideoCard extends StatelessWidget {
             controller.selectedVideo.value = video;
             controller.miniplayerController
                 .animateToHeight(state: PanelState.MAX);
-            print('Selected Video: ${controller.selectedVideo.value?.title}');
+            if (onTap != null) onTap!();
           },
           child: Stack(
             children: [
-              Image.network(
-                video.thumbnailUrl,
-                height: 220,
-                width: double.infinity,
-                fit: BoxFit.cover,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: hasPadding ? 12 : 0),
+                child: Image.network(
+                  video.thumbnailUrl,
+                  height: hasPadding ? 210 : 220,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
               Positioned(
-                right: 8.0,
+                right: hasPadding ? 20 : 8.0,
                 bottom: 8.0,
                 child: Container(
                   color: Colors.black,

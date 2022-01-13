@@ -58,7 +58,7 @@ class _NavScreensState extends State<NavScreens> {
                       } else {
                         return (height <= controller.miniplayerHeight + 50.0)
                             ? CustomMiniplayer()
-                            : VideoScreen();
+                            : const VideoScreen();
                       }
                     },
                   ),
@@ -74,6 +74,10 @@ class _NavScreensState extends State<NavScreens> {
               setState(() {
                 _selectedIndex = i;
               });
+              if (controller.selectedVideo.value != null) {
+                controller.miniplayerController
+                    .animateToHeight(state: PanelState.MIN);
+              }
             },
             items: const [
               BottomNavigationBarItem(
